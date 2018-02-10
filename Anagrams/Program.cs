@@ -9,7 +9,6 @@ namespace Anagrams
     class Anagram
     {
         private Dictionary<String, List<String>> cValues = new Dictionary<String, List<String>>();
-        private List<List<String>> results = new List<List<String>>();
 
         public Dictionary<String, List<String>> CheckedValues
         {
@@ -25,28 +24,6 @@ namespace Anagrams
                     cValues = value;
                 }
             }*/
-        }
-
-        public List<List<String>> Results
-        {
-            get
-            {
-                return results;
-            }
-            set
-            {
-                results = value;
-            }
-        }
-
-        public void AppendToResults(String input, int count)
-        {
-            results[count].Add(input);
-        }
-
-        public Boolean CompareKey(String key)
-        {
-            return cValues.ContainsKey(key);
         }
 
         public String SortString(String input)
@@ -84,7 +61,7 @@ namespace Anagrams
                     String partial = cValues[s][0];
                     for (int i = 1; i < cValues[s].Count; i++)
                     {
-                        partial += " " + cValues[s][i];
+                        partial += ", " + cValues[s][i];
                     }
                     result.Add(partial);
                 }
@@ -100,11 +77,32 @@ namespace Anagrams
         {
             //Testing different methods of Anagram below
             Anagram gram = new Anagram();
-            String test = "bca";
+            
+            String line;
+            List<String> inputList = new List<String>();
+
+            // Read the file and display it line by line.  
+            System.IO.StreamReader file =
+                new System.IO.StreamReader(@"../../fileInput.txt");
+            while ((line = file.ReadLine()) != null)
+            {
+                inputList.Add(line);
+            }
+
+            file.Close();
+
+            gram.ProcessList(inputList);
+            List<String> greaterList = gram.CountGreaterThanTwo();
+            for (int i = 0; i < greaterList.Count; i++)
+            {
+                Console.WriteLine(greaterList[i]);
+            }
+
+            /*String test = "bca";
             test = gram.SortString(test);
             Console.WriteLine(test);
-
-            /*Dictionary<String, String> dict = new Dictionary<String, String>
+            
+            Dictionary<String, String> dict = new Dictionary<String, String>
             {
                 ["One"] = "Two",
                 ["Three"] = "Four",
@@ -113,7 +111,7 @@ namespace Anagrams
             gram.CheckedValues = dict;
             Console.WriteLine(gram.CheckedValues["One"]);
             Console.WriteLine(gram.CheckedValues["Three"]);
-            Console.WriteLine(gram.CheckedValues["Five"]);*/
+            Console.WriteLine(gram.CheckedValues["Five"]);
 
             List<List<String>> results = new List<List<String>>();
             List<String> list1 = new List<String>
@@ -137,7 +135,7 @@ namespace Anagrams
             for (int i = 0; i < listGreater.Count; i++)
             {
                 Console.WriteLine("listGreater {0} ", i + listGreater[i]);
-            }
+            }*/
         }
     }
 }
