@@ -8,23 +8,23 @@ namespace Anagrams
 {
     class Anagram
     {
-        private Dictionary<String, String> cValues = new Dictionary<String, String>();
+        private Dictionary<String, List<String>> cValues = new Dictionary<String, List<String>>();
         private List<List<String>> results = new List<List<String>>();
 
-        public Dictionary<String, String> CheckedValues
+        public Dictionary<String, List<String>> CheckedValues
         {
             get
             {
                 return cValues;
             }
-            set
+            /*set
             {
                 Type t = value.GetType();
                 if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
                 {
                     cValues = value;
                 }
-            }
+            }*/
         }
 
         public List<List<String>> Results
@@ -35,17 +35,11 @@ namespace Anagrams
             }
             set
             {
-                /*Type t = value.GetType();
-                if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(List<List<String>>))
-                {
-                    results = value;
-                }*/
-
                 results = value;
             }
         }
 
-        public void appendToResults(String input, int count)
+        public void AppendToResults(String input, int count)
         {
             results[count].Add(input);
         }
@@ -61,18 +55,35 @@ namespace Anagrams
             Array.Sort(characters);
             return new string(characters);
         }
+
+        public void ProcessList(List<String> input)
+        {
+            for(int i = 0; i < input.Count; i++)
+            {
+                String sorted = SortString(input[i]);
+                if(CheckedValues.ContainsKey(sorted))
+                {
+                    CheckedValues[sorted].Add(input[i]);
+                }
+                else
+                {
+                    CheckedValues[sorted] = new List<String> {input[i] };
+                }
+            }
+        }
     }
 
     class Program
     {
         static void Main(string[] args)
         {
+            //Testing different methods of Anagram below
             Anagram gram = new Anagram();
             String test = "bca";
             test = gram.SortString(test);
             Console.WriteLine(test);
 
-            Dictionary<String, String> dict = new Dictionary<String, String>
+            /*Dictionary<String, String> dict = new Dictionary<String, String>
             {
                 ["One"] = "Two",
                 ["Three"] = "Four",
@@ -81,7 +92,7 @@ namespace Anagrams
             gram.CheckedValues = dict;
             Console.WriteLine(gram.CheckedValues["One"]);
             Console.WriteLine(gram.CheckedValues["Three"]);
-            Console.WriteLine(gram.CheckedValues["Five"]);
+            Console.WriteLine(gram.CheckedValues["Five"]);*/
 
             List<List<String>> results = new List<List<String>>();
             List<String> list1 = new List<String>
@@ -94,6 +105,12 @@ namespace Anagrams
             Console.WriteLine(results[0][0]);
             Console.WriteLine(gram.Results[0][0]);
             Console.WriteLine(gram.Results[0][1]);
+
+            List<String> listToSort = new List<String> {"abc", "acb", "def", "ghi", "igh", "hig"};
+            gram.ProcessList(listToSort);
+            Console.WriteLine(gram.CheckedValues["abc"].Count);
+            Console.WriteLine(gram.CheckedValues["def"].Count);
+            Console.WriteLine(gram.CheckedValues["ghi"].Count);
         }
     }
 }
