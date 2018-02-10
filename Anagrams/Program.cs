@@ -71,6 +71,27 @@ namespace Anagrams
                 }
             }
         }
+
+        public List<String> CountGreaterThanTwo()
+        {
+            Dictionary<String, List<String>>.KeyCollection keyColl = cValues.Keys;
+            List<String> result = new List<string>();
+
+            foreach (String s in keyColl)
+            {
+                if (cValues[s].Count > 1)
+                {
+                    String partial = cValues[s][0];
+                    for (int i = 1; i < cValues[s].Count; i++)
+                    {
+                        partial += " " + cValues[s][i];
+                    }
+                    result.Add(partial);
+                }
+            }
+
+            return result;
+        }
     }
 
     class Program
@@ -111,6 +132,12 @@ namespace Anagrams
             Console.WriteLine(gram.CheckedValues["abc"].Count);
             Console.WriteLine(gram.CheckedValues["def"].Count);
             Console.WriteLine(gram.CheckedValues["ghi"].Count);
+
+            List<String> listGreater = gram.CountGreaterThanTwo();
+            for (int i = 0; i < listGreater.Count; i++)
+            {
+                Console.WriteLine("listGreater {0} ", i + listGreater[i]);
+            }
         }
     }
 }
